@@ -5,12 +5,16 @@
  * Aluno: Guilherme Caixeta de Oliveira (gcaixetaoliveira@gmail.com)
  **/
 
-#include <iostream>
+#ifndef GAME_H
+#define GAME_H
 
-int main() {
+#include "src/utils/thread.h"
 
-    std::cout << "Hello!\n";
+class Game : public Thread {
+public:
+    Game();
+private:
 
-    return 0;
-}
+};
 
+#endif // GAME_H

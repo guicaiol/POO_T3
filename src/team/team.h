@@ -1,10 +1,17 @@
+/***
+ * SCC0604 - Programação Orientada a Objetos
+ * Universidade de São Paulo - São Carlos (SP)
+ * Esse arquivo é parte do Trabalho 3.
+ * Aluno: Guilherme Caixeta de Oliveira (gcaixetaoliveira@gmail.com)
+ **/
+
 #ifndef TEAM_H
 #define TEAM_H
 
 #include <sstream>
 #include <iostream>
 #include <vector>
-#include "character.h"
+#include "src/character/character.h"
 #include "color.h"
 
 class Team {

@@ -1,3 +1,10 @@
+/***
+ * SCC0604 - Programação Orientada a Objetos
+ * Universidade de São Paulo - São Carlos (SP)
+ * Esse arquivo é parte do Trabalho 3.
+ * @author: Guilherme Caixeta de Oliveira (gcaixetaoliveira@gmail.com)
+ **/
+
 #ifndef COLOR_H
 #define COLOR_H
 

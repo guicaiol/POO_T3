@@ -1,8 +1,15 @@
+/***
+ * SCC0604 - Programação Orientada a Objetos
+ * Universidade de São Paulo - São Carlos (SP)
+ * Esse arquivo é parte do Trabalho 3.
+ * Aluno: Guilherme Caixeta de Oliveira (gcaixetaoliveira@gmail.com)
+ **/
+
 #ifndef ARMOR_H
 #define ARMOR_H
 
-#include "item.h"
-#include "character.h"
+#include "src/item/item.h"
+#include "src/character/character.h"
 
 class Armor : public Item {
 protected:

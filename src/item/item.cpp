@@ -1,4 +1,11 @@
-#include "../include/item.h"
+/***
+ * SCC0604 - Programação Orientada a Objetos
+ * Universidade de São Paulo - São Carlos (SP)
+ * Esse arquivo é parte do Trabalho 3.
+ * Aluno: Guilherme Caixeta de Oliveira (gcaixetaoliveira@gmail.com)
+ **/
+
+#include "item.h"
 
 Item::Item(std::string name, double price, ItemType type) {
 	this->name = name;

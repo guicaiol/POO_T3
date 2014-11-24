@@ -5,12 +5,8 @@
  * Aluno: Guilherme Caixeta de Oliveira (gcaixetaoliveira@gmail.com)
  **/
 
-#include <iostream>
+#include "game.h"
 
-int main() {
+Game::Game() {
 
-    std::cout << "Hello!\n";
-
-    return 0;
 }
-

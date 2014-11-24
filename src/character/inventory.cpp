@@ -1,4 +1,11 @@
-#include "../include/inventory.h"
+/***
+ * SCC0604 - Programação Orientada a Objetos
+ * Universidade de São Paulo - São Carlos (SP)
+ * Esse arquivo é parte do Trabalho 3.
+ * Aluno: Guilherme Caixeta de Oliveira (gcaixetaoliveira@gmail.com)
+ **/
+
+#include "inventory.h"
 
 Inventory::Inventory() {
 	this->spaces = 0;
