@@ -17,7 +17,7 @@ protected:
     //int getAttackPts(); // not necessary, will automatically call Character::getAttackPts()
     int getDefensePts();
 public:
-    Knight(std::string alias, int power);
+    Knight(std::string _alias, int power);
 
     void addPower(int value);
     //void attack(Character &defender); // unused, for now, attack() still the same as Character::attack()

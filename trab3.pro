@@ -12,39 +12,44 @@ TARGET = trab3
 INCLUDEPATH = include/
 OBJECTS_DIR = obj/
 
-
-
 SOURCES += \
-    src/trab3/character/characters/knight.cpp \
-    src/trab3/character/characters/thief.cpp \
-    src/trab3/character/characters/wizard.cpp \
-    src/trab3/character/character.cpp \
-    src/trab3/character/inventory.cpp \
-    src/trab3/game/game.cpp \
-    src/trab3/item/armor/armor.cpp \
-    src/trab3/item/potion/potions/healthpotion.cpp \
-    src/trab3/item/potion/potions/manapotion.cpp \
-    src/trab3/item/potion/potion.cpp \
-    src/trab3/item/weapon/weapon.cpp \
-    src/trab3/item/item.cpp \
-    src/trab3/team/team.cpp \
-    src/trab3/utils/thread.cpp \
-    src/trab3/main.cpp
+    src/character/characters/knight.cpp \
+    src/character/characters/thief.cpp \
+    src/character/characters/wizard.cpp \
+    src/character/character.cpp \
+    src/character/inventory.cpp \
+    src/game/game.cpp \
+    src/item/armor/armor.cpp \
+    src/item/potion/potions/healthpotion.cpp \
+    src/item/potion/potions/manapotion.cpp \
+    src/item/potion/potion.cpp \
+    src/item/weapon/weapon.cpp \
+    src/item/item.cpp \
+    src/team/team.cpp \
+    src/utils/thread.cpp \
+    src/main.cpp \
+    src/utils/position.cpp \
+    src/game/field.cpp \
+    src/utils/timer.cpp
 HEADERS += \
-    src/trab3/character/characters/knight.h \
-    src/trab3/character/characters/thief.h \
-    src/trab3/character/characters/wizard.h \
-    src/trab3/character/character.h \
-    src/trab3/character/characters.h \
-    src/trab3/character/inventory.h \
-    src/trab3/game/game.h \
-    src/trab3/item/armor/armor.h \
-    src/trab3/item/potion/potions/healthpotion.h \
-    src/trab3/item/potion/potions/manapotion.h \
-    src/trab3/item/potion/potion.h \
-    src/trab3/item/weapon/weapon.h \
-    src/trab3/item/item.h \
-    src/trab3/item/items.h \
-    src/trab3/team/color.h \
-    src/trab3/team/team.h \
-    src/trab3/utils/thread.h
+    src/character/characters/knight.h \
+    src/character/characters/thief.h \
+    src/character/characters/wizard.h \
+    src/character/character.h \
+    src/character/characters.h \
+    src/character/inventory.h \
+    src/game/game.h \
+    src/item/armor/armor.h \
+    src/item/potion/potions/healthpotion.h \
+    src/item/potion/potions/manapotion.h \
+    src/item/potion/potion.h \
+    src/item/weapon/weapon.h \
+    src/item/item.h \
+    src/item/items.h \
+    src/team/color.h \
+    src/team/team.h \
+    src/utils/thread.h \
+    src/utils/position.h \
+    src/utils/myvector.h \
+    src/game/field.h \
+    src/utils/timer.h

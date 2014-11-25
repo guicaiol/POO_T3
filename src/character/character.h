@@ -13,8 +13,10 @@
 #include <sstream>
 #include <math.h>
 #include "inventory.h"
+#include "src/utils/thread.h"
+#include "src/utils/position.h"
 
-class Character {
+class Character : public Thread {
 protected:
 	unsigned XP;
 	unsigned strenght;
@@ -27,17 +29,21 @@ protected:
 private:
 	static const unsigned maxAttrSum = 100;
 
-	std::string alias;
-	Inventory myitems;
-    int HP;
-    int MP;
+    Position _position;
+    std::string _alias;
+    Inventory _myitems;
+    int _HP;
+    int _MP;
 	
     int getAttributesSum() const;
     double getRealSpeed() const;
+
+    void loop();
 public:
-	Character(std::string alias);
+    Character(std::string _alias);
     virtual ~Character();
 	
+    bool isAlive() const { return (_HP>0); }
     int getHP() const;
     int getMP() const;
 	std::string getName() const;
@@ -58,6 +64,9 @@ public:
     std::string getInfo();
 	
     virtual void attack(Character *defender);
+
+    void setPosition(const Position &pos);
+    void reset();
 };
 
 #endif // CHARACTER_H

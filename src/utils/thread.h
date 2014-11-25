@@ -16,11 +16,17 @@ class Thread {
 public:
     Thread();
 
-    // Returns if thread is currently running
-    bool isRunning() const { return _isRunning; }
+    // Get thread state
+    bool isRunning() const { return _running; }
+    bool isEnabled() const { return _enabled; }
 
-    // Starts the thread
+    // Set thread state
+    void enable() { _enabled = true;  }
+    void disable() { _enabled = false; }
+
+    // Start/end thread
     void start();
+    void stop();
 
     // Block until thread finishes
     void wait();
@@ -28,11 +34,11 @@ public:
     // Static method for sleeping
     static void msleep(unsigned long ms);
 private:
-    //
-    void runThread();
-    virtual void run() = 0;
+    void run();
+    virtual void loop() = 0;
 
-    bool _isRunning;
+    bool _running;
+    bool _enabled;
     std::thread _thread;
 };
 

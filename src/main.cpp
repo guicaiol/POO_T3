@@ -6,10 +6,25 @@
  **/
 
 #include <iostream>
+#include "src/game/game.h"
+
+#include "src/character/characters.h"
 
 int main() {
 
-    std::cout << "Hello!\n";
+    Team t1("T1", blue);
+    t1.addChar(new Wizard("t1c1", 10));
+
+    Team t2("T2", yellow);
+    t2.addChar(new Thief("t2c1", 10));
+
+    Game game(2, 5);
+    game.addTeam(&t1);
+    game.addTeam(&t2);
+
+    game.start();
+    game.wait();
+
 
     return 0;
 }

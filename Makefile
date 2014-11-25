@@ -45,21 +45,24 @@ OBJECTS_DIR   = obj/
 
 ####### Files
 
-SOURCES       = src/trab3/character/characters/knight.cpp \
-		src/trab3/character/characters/thief.cpp \
-		src/trab3/character/characters/wizard.cpp \
-		src/trab3/character/character.cpp \
-		src/trab3/character/inventory.cpp \
-		src/trab3/game/game.cpp \
-		src/trab3/item/armor/armor.cpp \
-		src/trab3/item/potion/potions/healthpotion.cpp \
-		src/trab3/item/potion/potions/manapotion.cpp \
-		src/trab3/item/potion/potion.cpp \
-		src/trab3/item/weapon/weapon.cpp \
-		src/trab3/item/item.cpp \
-		src/trab3/team/team.cpp \
-		src/trab3/utils/thread.cpp \
-		src/trab3/main.cpp 
+SOURCES       = src/character/characters/knight.cpp \
+		src/character/characters/thief.cpp \
+		src/character/characters/wizard.cpp \
+		src/character/character.cpp \
+		src/character/inventory.cpp \
+		src/game/game.cpp \
+		src/item/armor/armor.cpp \
+		src/item/potion/potions/healthpotion.cpp \
+		src/item/potion/potions/manapotion.cpp \
+		src/item/potion/potion.cpp \
+		src/item/weapon/weapon.cpp \
+		src/item/item.cpp \
+		src/team/team.cpp \
+		src/utils/thread.cpp \
+		src/main.cpp \
+		src/utils/position.cpp \
+		src/game/field.cpp \
+		src/utils/timer.cpp 
 OBJECTS       = obj/knight.o \
 		obj/thief.o \
 		obj/wizard.o \
@@ -74,7 +77,10 @@ OBJECTS       = obj/knight.o \
 		obj/item.o \
 		obj/team.o \
 		obj/thread.o \
-		obj/main.o
+		obj/main.o \
+		obj/position.o \
+		obj/field.o \
+		obj/timer.o
 DIST          = /usr/lib64/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib64/qt5/mkspecs/common/shell-unix.conf \
 		/usr/lib64/qt5/mkspecs/common/unix.conf \
@@ -177,21 +183,24 @@ DIST          = /usr/lib64/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib64/qt5/mkspecs/features/exceptions.prf \
 		/usr/lib64/qt5/mkspecs/features/yacc.prf \
 		/usr/lib64/qt5/mkspecs/features/lex.prf \
-		trab3.pro src/trab3/character/characters/knight.cpp \
-		src/trab3/character/characters/thief.cpp \
-		src/trab3/character/characters/wizard.cpp \
-		src/trab3/character/character.cpp \
-		src/trab3/character/inventory.cpp \
-		src/trab3/game/game.cpp \
-		src/trab3/item/armor/armor.cpp \
-		src/trab3/item/potion/potions/healthpotion.cpp \
-		src/trab3/item/potion/potions/manapotion.cpp \
-		src/trab3/item/potion/potion.cpp \
-		src/trab3/item/weapon/weapon.cpp \
-		src/trab3/item/item.cpp \
-		src/trab3/team/team.cpp \
-		src/trab3/utils/thread.cpp \
-		src/trab3/main.cpp
+		trab3.pro src/character/characters/knight.cpp \
+		src/character/characters/thief.cpp \
+		src/character/characters/wizard.cpp \
+		src/character/character.cpp \
+		src/character/inventory.cpp \
+		src/game/game.cpp \
+		src/item/armor/armor.cpp \
+		src/item/potion/potions/healthpotion.cpp \
+		src/item/potion/potions/manapotion.cpp \
+		src/item/potion/potion.cpp \
+		src/item/weapon/weapon.cpp \
+		src/item/item.cpp \
+		src/team/team.cpp \
+		src/utils/thread.cpp \
+		src/main.cpp \
+		src/utils/position.cpp \
+		src/game/field.cpp \
+		src/utils/timer.cpp
 QMAKE_TARGET  = trab3
 DESTDIR       = bin/#avoid trailing-slash linebreak
 TARGET        = bin/trab3
@@ -466,52 +475,131 @@ compiler_clean:
 
 ####### Compile
 
-obj/knight.o: src/trab3/character/characters/knight.cpp src/trab3/character/characters/knight.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o obj/knight.o src/trab3/character/characters/knight.cpp
+obj/knight.o: src/character/characters/knight.cpp src/character/characters/knight.h \
+		src/character/character.h \
+		src/character/inventory.h \
+		src/item/item.h \
+		src/utils/thread.h \
+		src/utils/position.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o obj/knight.o src/character/characters/knight.cpp
 
-obj/thief.o: src/trab3/character/characters/thief.cpp src/trab3/character/characters/thief.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o obj/thief.o src/trab3/character/characters/thief.cpp
+obj/thief.o: src/character/characters/thief.cpp src/character/characters/thief.h \
+		src/character/character.h \
+		src/character/inventory.h \
+		src/item/item.h \
+		src/utils/thread.h \
+		src/utils/position.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o obj/thief.o src/character/characters/thief.cpp
 
-obj/wizard.o: src/trab3/character/characters/wizard.cpp src/trab3/character/characters/wizard.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o obj/wizard.o src/trab3/character/characters/wizard.cpp
+obj/wizard.o: src/character/characters/wizard.cpp src/character/characters/wizard.h \
+		src/character/character.h \
+		src/character/inventory.h \
+		src/item/item.h \
+		src/utils/thread.h \
+		src/utils/position.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o obj/wizard.o src/character/characters/wizard.cpp
 
-obj/character.o: src/trab3/character/character.cpp src/trab3/character/character.h \
-		src/trab3/character/inventory.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o obj/character.o src/trab3/character/character.cpp
+obj/character.o: src/character/character.cpp src/character/character.h \
+		src/character/inventory.h \
+		src/item/item.h \
+		src/utils/thread.h \
+		src/utils/position.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o obj/character.o src/character/character.cpp
 
-obj/inventory.o: src/trab3/character/inventory.cpp src/trab3/character/inventory.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o obj/inventory.o src/trab3/character/inventory.cpp
+obj/inventory.o: src/character/inventory.cpp src/character/inventory.h \
+		src/item/item.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o obj/inventory.o src/character/inventory.cpp
 
-obj/game.o: src/trab3/game/game.cpp src/trab3/game/game.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o obj/game.o src/trab3/game/game.cpp
+obj/game.o: src/game/game.cpp src/game/game.h \
+		src/utils/thread.h \
+		src/utils/myvector.h \
+		src/team/team.h \
+		src/character/character.h \
+		src/character/inventory.h \
+		src/item/item.h \
+		src/utils/position.h \
+		src/team/color.h \
+		src/game/field.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o obj/game.o src/game/game.cpp
 
-obj/armor.o: src/trab3/item/armor/armor.cpp src/trab3/item/armor/armor.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o obj/armor.o src/trab3/item/armor/armor.cpp
+obj/armor.o: src/item/armor/armor.cpp src/item/armor/armor.h \
+		src/item/item.h \
+		src/character/character.h \
+		src/character/inventory.h \
+		src/utils/thread.h \
+		src/utils/position.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o obj/armor.o src/item/armor/armor.cpp
 
-obj/healthpotion.o: src/trab3/item/potion/potions/healthpotion.cpp src/trab3/item/potion/potions/healthpotion.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o obj/healthpotion.o src/trab3/item/potion/potions/healthpotion.cpp
+obj/healthpotion.o: src/item/potion/potions/healthpotion.cpp src/item/potion/potions/healthpotion.h \
+		src/item/potion/potion.h \
+		src/item/item.h \
+		src/character/character.h \
+		src/character/inventory.h \
+		src/utils/thread.h \
+		src/utils/position.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o obj/healthpotion.o src/item/potion/potions/healthpotion.cpp
 
-obj/manapotion.o: src/trab3/item/potion/potions/manapotion.cpp src/trab3/item/potion/potions/manapotion.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o obj/manapotion.o src/trab3/item/potion/potions/manapotion.cpp
+obj/manapotion.o: src/item/potion/potions/manapotion.cpp src/item/potion/potions/manapotion.h \
+		src/item/potion/potion.h \
+		src/item/item.h \
+		src/character/character.h \
+		src/character/inventory.h \
+		src/utils/thread.h \
+		src/utils/position.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o obj/manapotion.o src/item/potion/potions/manapotion.cpp
 
-obj/potion.o: src/trab3/item/potion/potion.cpp src/trab3/item/potion/potion.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o obj/potion.o src/trab3/item/potion/potion.cpp
+obj/potion.o: src/item/potion/potion.cpp src/item/potion/potion.h \
+		src/item/item.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o obj/potion.o src/item/potion/potion.cpp
 
-obj/weapon.o: src/trab3/item/weapon/weapon.cpp src/trab3/item/weapon/weapon.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o obj/weapon.o src/trab3/item/weapon/weapon.cpp
+obj/weapon.o: src/item/weapon/weapon.cpp src/item/weapon/weapon.h \
+		src/item/item.h \
+		src/character/character.h \
+		src/character/inventory.h \
+		src/utils/thread.h \
+		src/utils/position.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o obj/weapon.o src/item/weapon/weapon.cpp
 
-obj/item.o: src/trab3/item/item.cpp src/trab3/item/item.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o obj/item.o src/trab3/item/item.cpp
+obj/item.o: src/item/item.cpp src/item/item.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o obj/item.o src/item/item.cpp
 
-obj/team.o: src/trab3/team/team.cpp src/trab3/team/team.h \
-		src/trab3/team/color.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o obj/team.o src/trab3/team/team.cpp
+obj/team.o: src/team/team.cpp src/team/team.h \
+		src/character/character.h \
+		src/character/inventory.h \
+		src/item/item.h \
+		src/utils/thread.h \
+		src/utils/position.h \
+		src/team/color.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o obj/team.o src/team/team.cpp
 
-obj/thread.o: src/trab3/utils/thread.cpp src/trab3/utils/thread.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o obj/thread.o src/trab3/utils/thread.cpp
+obj/thread.o: src/utils/thread.cpp src/utils/thread.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o obj/thread.o src/utils/thread.cpp
 
-obj/main.o: src/trab3/main.cpp 
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o obj/main.o src/trab3/main.cpp
+obj/main.o: src/main.cpp src/game/game.h \
+		src/utils/thread.h \
+		src/utils/myvector.h \
+		src/team/team.h \
+		src/character/character.h \
+		src/character/inventory.h \
+		src/item/item.h \
+		src/utils/position.h \
+		src/team/color.h \
+		src/game/field.h \
+		src/character/characters.h \
+		src/character/characters/knight.h \
+		src/character/characters/wizard.h \
+		src/character/characters/thief.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o obj/main.o src/main.cpp
+
+obj/position.o: src/utils/position.cpp src/utils/position.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o obj/position.o src/utils/position.cpp
+
+obj/field.o: src/game/field.cpp src/game/field.h \
+		src/utils/position.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o obj/field.o src/game/field.cpp
+
+obj/timer.o: src/utils/timer.cpp src/utils/timer.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o obj/timer.o src/utils/timer.cpp
 
 ####### Install
 

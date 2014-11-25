@@ -104,3 +104,60 @@ void Team::removeChar(Character *c) {
 void Team::removeChar(int index) {
     removeChar(*(characters.begin() + index));
 }
+
+void Team::setInitialPosition(const Position &center) {
+    // Calculate players positions based on center position
+    const Position pos[] = {
+        Position(center.x()+1, center.y()+1),
+        Position(center.x()-1, center.y()+1),
+        Position(center.x()+1, center.y()-1),
+        Position(center.x()-1, center.y()-1)
+    };
+
+    // Set players positions
+    int c=0;
+    std::vector<Character*>::iterator it;
+    for(it=characters.begin(); it!=characters.end(); it++, c++) {
+        Character *ch = *it;
+        ch->setPosition(pos[c]);
+    }
+}
+
+void Team::reset() {
+    // Reset each player
+    std::vector<Character*>::iterator it;
+    for(it=characters.begin(); it!=characters.end(); it++) {
+        Character *ch = *it;
+        ch->reset();
+    }
+}
+
+void Team::stopBattle() {
+    // Reset each player
+    std::vector<Character*>::iterator it;
+    for(it=characters.begin(); it!=characters.end(); it++) {
+        Character *ch = *it;
+        ch->stop();
+        ch->wait();
+    }
+}
+
+void Team::startGame() {
+    // Start each player
+    std::vector<Character*>::iterator it;
+    for(it=characters.begin(); it!=characters.end(); it++) {
+        Character *ch = *it;
+        ch->start();
+    }
+}
+
+int Team::playersAlive() const {
+    int alive=0;
+    std::vector<Character*>::const_iterator it;
+    for(it=characters.cbegin(); it!=characters.cend(); it++) {
+        const Character *ch = *it;
+        if(ch->isAlive())
+            alive++;
+    }
+    return alive;
+}

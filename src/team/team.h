@@ -11,7 +11,9 @@
 #include <sstream>
 #include <iostream>
 #include <vector>
+
 #include "src/character/character.h"
+#include "src/utils/position.h"
 #include "color.h"
 
 class Team {
@@ -38,6 +40,13 @@ public:
     void removeChar(Character *c);
     void removeChar(std::string name);
     int size() const { return characters.size(); }
+
+
+    int playersAlive() const;
+    void setInitialPosition(const Position &center);
+    void reset();
+    void stopBattle();
+    void startGame();
 };
 
 #endif // TEAM_H

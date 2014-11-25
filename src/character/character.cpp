@@ -8,7 +8,7 @@
 #include "character.h"
 
 Character::Character(std::string alias) {
-	this->alias = alias;
+    this->_alias = alias;
 	
 	// Initialization
 	this->XP = 1;
@@ -16,19 +16,25 @@ Character::Character(std::string alias) {
 	this->speed = 1;
 	this->dexterity = 1;
 	this->constitution = 1;
-	this->HP = 100;
-	this->MP = 100;
+    this->_HP = 100;
+    this->_MP = 100;
 
-    // Default spaces = 5, currently constant
-    myitems.setSpaces(5);
+    // Default spaces = 5
+    _myitems.setSpaces(5);
 }
 
 Character::~Character() {
 
 }
 
+void Character::loop() {
+    //std::cout << "Character '" << getName() << "' run!\n";
+    //if(this->getName()=="t2c1")
+//        this->addHP(-60);
+}
+
 void Character::useItem(std::string name) {
-    Item *item = myitems.searchItem(name);
+    Item *item = _myitems.searchItem(name);
     if(item==NULL) {
         std::cout << ">> Character (" << this->getName() << "): tried to use item \"" << name << "\" that doesn't exists in inventory!\n";
         return;
@@ -39,22 +45,22 @@ void Character::useItem(std::string name) {
 }
 
 bool Character::hasItem(std::string name) const {
-    Item *item = myitems.searchItem(name);
+    Item *item = _myitems.searchItem(name);
     if(item!=NULL)
         return true;
     return false;
 }
 
 int Character::getHP() const {
-    return this->HP;
+    return this->_HP;
 }
 
 int Character::getMP() const {
-    return this->MP;
+    return this->_MP;
 }
 
 std::string Character::getName() const {
-	return this->alias;
+    return this->_alias;
 }
 
 int Character::getAttributesSum() const {
@@ -67,7 +73,7 @@ void Character::setStrenght(int value) {
     int attrSum = this->getAttributesSum();
     int free = Character::maxAttrSum - attrSum + this->strenght;
 	if(value>free) {
-		std::cout << ">> Character '" << this->alias << "': setStrenght(" << value << ") exceeded maximum points available; strenght set to " << free << ".\n";
+        std::cout << ">> Character '" << this->_alias << "': setStrenght(" << value << ") exceeded maximum points available; strenght set to " << free << ".\n";
 		value = free;
 	}
 	
@@ -80,7 +86,7 @@ void Character::setSpeed(int value) {
     int attrSum = this->getAttributesSum();
     int free = Character::maxAttrSum - attrSum + this->speed;
 	if(value>free) {
-		std::cout << ">> Character '" << this->alias << "': setSpeed(" << value << ") exceeded maximum points available; speed set to " << free << ".\n";
+        std::cout << ">> Character '" << this->_alias << "': setSpeed(" << value << ") exceeded maximum points available; speed set to " << free << ".\n";
 		value = free;
 	}
 	
@@ -93,7 +99,7 @@ void Character::setDexterity(int value) {
     int attrSum = this->getAttributesSum();
     int free = Character::maxAttrSum - attrSum + this->dexterity;
 	if(value>free) {
-		std::cout << ">> Character '" << this->alias << "': setDexterity(" << value << ") exceeded maximum points available; dexterity set to " << free << ".\n";
+        std::cout << ">> Character '" << this->_alias << "': setDexterity(" << value << ") exceeded maximum points available; dexterity set to " << free << ".\n";
 		value = free;
 	}
 	
@@ -106,7 +112,7 @@ void Character::setConstitution(int value) {
     int attrSum = this->getAttributesSum();
     int free = Character::maxAttrSum - attrSum + this->constitution;
 	if(value>free) {
-		std::cout << ">> Character '" << this->alias << "': setConstitution(" << value << ") exceeded maximum points available; constitution set to " << free << ".\n";
+        std::cout << ">> Character '" << this->_alias << "': setConstitution(" << value << ") exceeded maximum points available; constitution set to " << free << ".\n";
 		value = free;
 	}
 	
@@ -132,32 +138,32 @@ void Character::addXP(int value) {
 }
 
 void Character::addHP(int value) {
-	this->HP += value;
+    this->_HP += value;
 	
 	// Check min and max
-    if((int)this->HP < 0)
-		this->HP = 0;
-    if((int)this->HP > 100)
-		this->HP = 100;
+    if((int)this->_HP < 0)
+        this->_HP = 0;
+    if((int)this->_HP > 100)
+        this->_HP = 100;
 }
 
 void Character::addMP(int value) {
-	this->MP += value;
+    this->_MP += value;
 	
 	// Check min and max
-	if(this->MP < 0)
-		this->MP = 0;
-	if(this->MP > 100)
-		this->MP = 100;
+    if(this->_MP < 0)
+        this->_MP = 0;
+    if(this->_MP > 100)
+        this->_MP = 100;
 }
 
 double Character::getRealSpeed() const {
-    const double w = myitems.getEquipedWeight();
+    const double w = _myitems.getEquipedWeight();
     return speed*exp(-pow(w/20, 2));
 }
 
 int Character::getDefensePts() const {
-	int equiped_def_pts = myitems.getEquipedDefensePts();
+    int equiped_def_pts = _myitems.getEquipedDefensePts();
 	float constitution = 0.5*this->constitution;
 	float dexterity = 0.3*this->dexterity;
     float speed = 0.2*this->getRealSpeed();
@@ -165,7 +171,7 @@ int Character::getDefensePts() const {
 }
 
 int Character::getAttackPts() const {
-	int equiped_atk_pts = myitems.getEquipedAttackPts();
+    int equiped_atk_pts = _myitems.getEquipedAttackPts();
 	float strenght = 0.5*this->strenght;
 	float dexterity = 0.3*this->dexterity;
     float speed = 0.2*this->getRealSpeed();
@@ -176,7 +182,7 @@ void Character::attack(Character *defender) {
 	int r=0;
 	
 	// Output
-    std::cout << this->alias << " attacks " << defender->getName() << ": ";
+    std::cout << this->_alias << " attacks " << defender->getName() << ": ";
 	
 	// Miss chance
 	const float miss = (0.1/this->XP)*100;
@@ -219,20 +225,20 @@ void Character::attack(Character *defender) {
 
 
 void Character::equipItem(std::string name) {
-    myitems.equipItem(name);
+    _myitems.equipItem(name);
 }
 
 void Character::storeItem(Item *item, bool equip) {
-    myitems.insertItem(item, equip);
+    _myitems.insertItem(item, equip);
 }
 
 void Character::dropItem(std::string name) {
-    myitems.removeItem(name);
+    _myitems.removeItem(name);
 }
 
 std::string Character::getInfo() {
     std::stringstream ss;
-    ss << "Character alias: " << this->alias << std::endl;
+    ss << "Character alias: " << this->_alias << std::endl;
     ss << "Attack points: " << this->getAttackPts() << std::endl;
     ss << "Defense points: " << this->getDefensePts() << std::endl;
     ss << "XP: " << this->XP << std::endl;
@@ -242,11 +248,24 @@ std::string Character::getInfo() {
     ss << "Dexterity: " << this->dexterity << std::endl;
     ss << "Constitution: " << this->constitution << std::endl;
     ss << "Items in inventory:";
-    for(int i=0; i<myitems.size(); i++) {
-		Item *item = myitems.searchItem(i);
+    for(int i=0; i<_myitems.size(); i++) {
+        Item *item = _myitems.searchItem(i);
         if(item==NULL)
             break;
         ss << "\n\t" << item->getName() << " (atkPts: " << item->getAttackPts() << ", defPts: " << item->getDefensePts() << ", resPts: " << item->getRestorePts() << ")";
 	}
     return ss.str();
+}
+
+void Character::setPosition(const Position &pos) {
+    _position = pos;
+}
+
+void Character::reset() {
+    // Reset position
+    _position.setPosition(0, 0);
+
+    // Reset HP and MP
+    _HP = 100;
+    _MP = 100;
 }

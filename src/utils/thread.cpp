@@ -8,26 +8,37 @@
 #include "thread.h"
 
 Thread::Thread() {
-    _isRunning = false;
+    _running = false;
+    _enabled = true;
 }
 
 void Thread::start() {
-    if(_isRunning)
+    if(_running)
         return;
     else {
-        _isRunning = true;
-        _thread = std::thread(&Thread::runThread, this);
+        _running = true;
+        _enabled = true;
+        _thread = std::thread(&Thread::run, this);
     }
 }
 
-void Thread::wait() {
-    if(isRunning() && _thread.joinable())
-        _thread.join();
+void Thread::run() {
+    while(_running) {
+        if(_enabled)
+            loop();
+        msleep(20);
+        //msleep(1000);
+    }
 }
 
-void Thread::runThread() {
-    run();
-    _isRunning = false;
+void Thread::stop() {
+    if(_running)
+        _running = false;
+}
+
+void Thread::wait() {
+    if(_thread.joinable())
+        _thread.join();
 }
 
 void Thread::msleep(unsigned long ms) {
