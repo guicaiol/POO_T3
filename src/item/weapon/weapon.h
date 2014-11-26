@@ -13,14 +13,16 @@
 
 class Weapon : public Item {
 protected:
-	unsigned attackpts;
-	double range;
+    unsigned _attackPts;
+    double _range;
+    int _atkSpeed;
 public:
-	Weapon(std::string name, double price, unsigned attackpts, double range);
+    Weapon(std::string name, double price, unsigned attackPts, double range, int atkSpeed);
 	Weapon(const Weapon &weapon);
 	
     int getAttackPts() const;
 	double getRange() const;
+    int getAtkSpeed() const;
 
     void use(Character *c);
 };

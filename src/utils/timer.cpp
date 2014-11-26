@@ -8,7 +8,12 @@
 #include "timer.h"
 
 Timer::Timer() {
+    reset();
+}
 
+void Timer::reset() {
+    time1.tv_sec = time1.tv_nsec = 0;
+    time2.tv_sec = time2.tv_nsec = 0;
 }
 
 void Timer::start() {

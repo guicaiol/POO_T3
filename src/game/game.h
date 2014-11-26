@@ -12,6 +12,7 @@
 #include "src/utils/thread.h"
 #include "src/utils/myvector.h"
 #include "src/utils/timer.h"
+#include "src/utils/outputhandler.h"
 #include "src/team/team.h"
 #include "field.h"
 
@@ -27,15 +28,22 @@ private:
 
     // Duration (seconds) of a round
     int _roundTime;
+    int _marker;
 
     // List of teams in the game
     MyVector<Team*> _teams;
+
+    // Field with characters information
+    Field _field;
 
     // Inherit from Thread, implements the thread function
     void loop();
 
     // Stop team players threads
+    void generateField();
+    void resetBattle();
     void stopBattle();
+    void startBattle();
 
     // Resolve battle, adding win/lose/draw to teams and returning winner
     Team* resolveBattle();

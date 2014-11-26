@@ -14,39 +14,55 @@
 
 #include "src/character/character.h"
 #include "src/utils/position.h"
+#include "src/utils/myvector.h"
 #include "color.h"
+
+class Field; // foward-declaration
 
 class Team {
 private:
-    std::string name;
-    Color color;
-    int win;
-    int lose;
-    int draw;
-    std::vector<Character*> characters;
+    std::string _name;
+    Color _color;
+    int _win;
+    int _lose;
+    int _draw;
+    MyVector<Character*> _characters;
+    Field *_field;
 public:
-    Team(std::string name, Color color);
+    Team(std::string _name, Color _color);
     ~Team();
 
+    // Team info
     std::string getName() const;
     std::string getResults() const;
     std::string toString() const;
-    std::string getCharsInfo() const;
     double getPoints() const;
-    Character* searchChar(std::string name) const;
-    int resolveBattle(const Team &team);
+
+    // Characters info
+    std::string getCharsInfo() const;
+    MyVector<Character*>* chars();
+    Character* searchChar(std::string _name) const;
     void addChar(Character *c);
     void removeChar(int index);
     void removeChar(Character *c);
-    void removeChar(std::string name);
-    int size() const { return characters.size(); }
+    void removeChar(std::string _name);
+    int size() const { return _characters.size(); }
 
-
-    int playersAlive() const;
-    void setInitialPosition(const Position &center);
+    // Battle control
     void reset();
     void stopBattle();
-    void startGame();
+    void startBattle();
+    void setInitialPosition(const Position &center);
+    int playersAlive() const;
+
+    // Field/enemies info
+    void setField(Field *field);
+    Character* getNearestEnemy(Character *ch);
+
+    // Battle info modifiers
+    void addWin() { _win++; }
+    void addLose() { _lose++; }
+    void addDraw() { _draw++; }
 };
 
 #endif // TEAM_H

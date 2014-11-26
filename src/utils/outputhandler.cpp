@@ -5,12 +5,14 @@
  * Aluno: Guilherme Caixeta de Oliveira (gcaixetaoliveira@gmail.com)
  **/
 
-#ifndef ITEMS_H
-#define ITEMS_H
+#include "outputhandler.h"
 
-#include "armor/armor.h"
-#include "weapon/weapon.h"
-#include "potion/potions/healthpotion.h"
-#include "potion/potions/manapotion.h"
+std::mutex OutputHandler::_mutex;
 
-#endif // ITEMS_H
+void OutputHandler::lock() {
+    OutputHandler::_mutex.lock();
+}
+
+void OutputHandler::unlock() {
+    OutputHandler::_mutex.unlock();
+}

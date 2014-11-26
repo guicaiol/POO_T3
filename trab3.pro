@@ -30,7 +30,8 @@ SOURCES += \
     src/main.cpp \
     src/utils/position.cpp \
     src/game/field.cpp \
-    src/utils/timer.cpp
+    src/utils/timer.cpp \
+    src/utils/outputhandler.cpp
 HEADERS += \
     src/character/characters/knight.h \
     src/character/characters/thief.h \
@@ -52,4 +53,5 @@ HEADERS += \
     src/utils/position.h \
     src/utils/myvector.h \
     src/game/field.h \
-    src/utils/timer.h
+    src/utils/timer.h \
+    src/utils/outputhandler.h

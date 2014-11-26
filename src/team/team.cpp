@@ -6,48 +6,54 @@
  **/
 
 #include "team.h"
+#include "src/game/field.h"
 
 Team::Team(std::string name, Color color) {
-    this->name = name;
-    this->color = color;
+    this->_name = name;
+    this->_color = color;
+    this->_field = NULL;
 
     // Initialization
-    this->win = 0;
-    this->lose = 0;
-    this->draw = 0;
+    this->_win = 0;
+    this->_lose = 0;
+    this->_draw = 0;
 }
 
 Team::~Team() {
-    while(characters.empty()==false) {
-        Character *tmp = characters.at(characters.size()-1);
+    while(_characters.empty()==false) {
+        Character *tmp = _characters.at(_characters.size()-1);
         delete tmp;
-        characters.pop_back();
+        _characters.pop_back();
     }
 }
 
+void Team::setField(Field *field) {
+    _field = field;
+}
+
 std::string Team::getName() const {
-    return this->name;
+    return this->_name;
 }
 
 std::string Team::getResults() const {
     std::stringstream ss;
-    ss << "Team \"" << this->name << "\" (" << HColor::colorToString(this->color) << "):\n";
-    ss << this->win << " win\n";
-    ss << this->lose << " lost\n";
-    ss << this->draw << " draw\n";
+    ss << "Team \"" << this->_name << "\" (" << HColor::colorToString(this->_color) << "):\n";
+    ss << this->_win << " win\n";
+    ss << this->_lose << " lost\n";
+    ss << this->_draw << " draw\n";
     return ss.str();
 }
 
 std::string Team::toString() const {
     std::stringstream ss;
-    ss << this->name << " (" << HColor::colorToString(this->color) << ")";
+    ss << this->_name << " (" << HColor::colorToString(this->_color) << ")";
     return ss.str();
 }
 
 std::string Team::getCharsInfo() const {
     std::stringstream ss;
-    for(unsigned i=0; i<characters.size(); i++) {
-        Character *tmp = characters.at(i);
+    for(unsigned i=0; i<_characters.size(); i++) {
+        Character *tmp = _characters.at(i);
         ss << "--------- Char \"" << tmp->getName()  << "\" ---------\n";
         ss << tmp->getInfo() << "\n\n";
     }
@@ -56,43 +62,30 @@ std::string Team::getCharsInfo() const {
 
 double Team::getPoints() const {
     double sum=0.0;
-    for(std::vector<Character*>::const_iterator it = characters.begin(); it!=characters.end(); it++)
+    for(std::vector<Character*>::const_iterator it = _characters.begin(); it!=_characters.end(); it++)
         sum += (*it)->getHP();
-    return (double)sum/characters.size();
+    return (double)sum/_characters.size();
 }
 
 Character* Team::searchChar(std::string name) const {
-    for(std::vector<Character*>::const_iterator it = characters.begin(); it!=characters.end(); it++)
+    for(std::vector<Character*>::const_iterator it = _characters.begin(); it!=_characters.end(); it++)
         if((*it)->getName()==name)
             return (*it);
     return NULL;
 }
 
-int Team::resolveBattle(const Team &team) {
-    const double our = this->getPoints();
-    const double their = team.getPoints();
-    const double result = our - their;
-
-    if(result>0) // win
-        win++;
-    else if(result<0) // lose
-        lose++;
-    else if(result==0) // draw
-        draw++;
-    return result>0? 1 : (result<0? -1 : 0);
-}
-
 void Team::addChar(Character *c) {
     if(c==NULL)
         return;
-    characters.push_back(c);
+    _characters.push_back(c);
+    c->setTeam(this);
 }
 
 void Team::removeChar(std::string name) {
-    for(std::vector<Character*>::iterator it = characters.begin(); it!=characters.end(); it++) {
+    for(std::vector<Character*>::iterator it = _characters.begin(); it!=_characters.end(); it++) {
         if((*it)->getName()==name) {
             delete (*it);
-            characters.erase(it);
+            _characters.erase(it);
         }
     }
 }
@@ -102,7 +95,7 @@ void Team::removeChar(Character *c) {
 }
 
 void Team::removeChar(int index) {
-    removeChar(*(characters.begin() + index));
+    removeChar(*(_characters.begin() + index));
 }
 
 void Team::setInitialPosition(const Position &center) {
@@ -117,7 +110,7 @@ void Team::setInitialPosition(const Position &center) {
     // Set players positions
     int c=0;
     std::vector<Character*>::iterator it;
-    for(it=characters.begin(); it!=characters.end(); it++, c++) {
+    for(it=_characters.begin(); it!=_characters.end(); it++, c++) {
         Character *ch = *it;
         ch->setPosition(pos[c]);
     }
@@ -126,7 +119,7 @@ void Team::setInitialPosition(const Position &center) {
 void Team::reset() {
     // Reset each player
     std::vector<Character*>::iterator it;
-    for(it=characters.begin(); it!=characters.end(); it++) {
+    for(it=_characters.begin(); it!=_characters.end(); it++) {
         Character *ch = *it;
         ch->reset();
     }
@@ -135,17 +128,17 @@ void Team::reset() {
 void Team::stopBattle() {
     // Reset each player
     std::vector<Character*>::iterator it;
-    for(it=characters.begin(); it!=characters.end(); it++) {
+    for(it=_characters.begin(); it!=_characters.end(); it++) {
         Character *ch = *it;
         ch->stop();
         ch->wait();
     }
 }
 
-void Team::startGame() {
+void Team::startBattle() {
     // Start each player
     std::vector<Character*>::iterator it;
-    for(it=characters.begin(); it!=characters.end(); it++) {
+    for(it=_characters.begin(); it!=_characters.end(); it++) {
         Character *ch = *it;
         ch->start();
     }
@@ -154,10 +147,18 @@ void Team::startGame() {
 int Team::playersAlive() const {
     int alive=0;
     std::vector<Character*>::const_iterator it;
-    for(it=characters.cbegin(); it!=characters.cend(); it++) {
+    for(it=_characters.cbegin(); it!=_characters.cend(); it++) {
         const Character *ch = *it;
         if(ch->isAlive())
             alive++;
     }
     return alive;
+}
+
+MyVector<Character*>* Team::chars() {
+    return &_characters;
+}
+
+Character* Team::getNearestEnemy(Character *ch) {
+    return _field->getNearestEnemy(this, ch);
 }

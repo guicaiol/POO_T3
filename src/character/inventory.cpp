@@ -88,7 +88,22 @@ void Inventory::insertItem(Item *item, bool equip) {
         if(equip) // if equip, equip item
             equipItem(item->getName());
     }
+}
 
+const Item* Inventory::getEquipedWeapon() const {
+    std::vector< std::pair<Item*, bool> >::const_iterator it;
+    for(it = items.cbegin(); it!=items.cend(); it++) {
+        const Item* item = it->first;
+        const bool equiped = it->second;
+
+        // If attack item and equiped, return
+        if(item->getType()==IT_ATTACK && equiped) {
+            return item;
+            break;
+        }
+    }
+
+    return NULL;
 }
 
 void Inventory::equipItem(std::string name) {

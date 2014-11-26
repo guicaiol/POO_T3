@@ -10,6 +10,7 @@
 Game::Game(int rounds, int roundTime) {
     _rounds = rounds;
     _roundTime = roundTime;
+    _marker = -1;
 }
 
 void Game::addTeam(Team *team) {
@@ -35,35 +36,21 @@ void Game::loop() {
     if(_teams.size()<2)
         throw std::runtime_error("Game::run(), game can only start with at least 2 teams!");
 
+    // Initialize teams with field information
+    generateField();
+
     // Run rounds
     for(int round=1; round<=_rounds; round++) {
         std::vector<Team*>::iterator it;
-        int c=0;
         std::cout << "Starting round #" << round << "...\n";
 
-        // For each team, do reset operations
-        c=0;
-        for(it=_teams.begin(); it!=_teams.end(); it++,c++) {
-            Team *team = *it;
-            // Stop characteres, case some of them stayed as winner of previous round
-            team->stopBattle();
+        // Reset battle
+        resetBattle();
 
-            // Reset team characters
-            team->reset();
+        // Start battle
+        startBattle();
 
-            // Set initial positions
-            team->setInitialPosition(Field::teamPos(c));
-        }
-
-        // For each team, start game!
-        c=0;
-        for(it=_teams.begin(); it!=_teams.end(); it++,c++) {
-            Team *team = *it;
-            team->startGame();
-            std::cout << "Team '" << team->getName() << "' is on battle!\n";
-        }
-
-        // Wait until only one team is alive, or timeout
+        // Wait until only one team is alive, or time out
         Timer timer;
         timer.start();
         while(true) {
@@ -79,10 +66,23 @@ void Game::loop() {
             if(teamsAlive<=1) // we have a winner (1), or draw (0)
                 break;
 
-            // Time out
+            // Mark time
             timer.mark();
+
+            // Time remaining print
+            int time = _roundTime-timer.timesec();
+            if(time!=_marker) {
+                OutputHandler::lock();
+                std::cout << "Time remaining: [" << time << " seconds]\n";
+                OutputHandler::unlock();
+                _marker = time;
+            }
+
+            // Time out checking
             if(timer.timesec()>=_roundTime) { // time out!
+                OutputHandler::lock();
                 std::cout << "TIME OUT!\n";
+                OutputHandler::unlock();
                 stopBattle();
                 break;
             }
@@ -94,24 +94,63 @@ void Game::loop() {
         if(winner==NULL)
             std::cout << "DRAW!";
         else
-            std::cout << "'" << winner->getName() << "' wins!";
-        std::cout << std::endl;
+            std::cout << winner->getName() << " wins!";
+        std::cout << "\n\n";
+
+        // Compute win/lose/draw
+        if(winner==NULL) {
+            MyVector<Team*>::iterator it;
+            for(it=_teams.begin(); it!=_teams.end(); it++) {
+                Team *team = *it;
+                team->addDraw();
+            }
+        } else {
+            winner->addWin();
+            MyVector<Team*>::iterator it;
+            for(it=_teams.begin(); it!=_teams.end(); it++) {
+                Team *team = *it;
+                if(team==winner)
+                    continue;
+                team->addLose();
+            }
+        }
+
     }
 
     // For each team, do final reset operations
+    resetBattle();
+
+    stop();
+}
+
+void Game::generateField() {
+    // Clean
+    _field.reset();
+
+    // Add teams to field
+    std::vector<Team*>::iterator it;
+    for(it=_teams.begin(); it!=_teams.end(); it++) {
+        Team *team = *it;
+        _field.addTeam(team);
+        team->setField(&_field);
+    }
+}
+
+void Game::resetBattle() {
+    // First, stop battle, for convenience
+    stopBattle();
+
+    // Then reset characters and set initial positions
     int c=0;
     std::vector<Team*>::iterator it;
     for(it=_teams.begin(); it!=_teams.end(); it++,c++) {
         Team *team = *it;
-
-        // Stop characters
-        team->stopBattle();
-
         // Reset team characters
         team->reset();
-    }
 
-    stop();
+        // Set initial positions
+        team->setInitialPosition(Field::teamPos(c));
+    }
 }
 
 void Game::stopBattle() {
@@ -120,6 +159,17 @@ void Game::stopBattle() {
     for(it=_teams.begin(); it!=_teams.end(); it++) {
         Team *team = *it;
         team->stopBattle();
+    }
+}
+
+void Game::startBattle() {
+    // Start each team
+    int c=0;
+    std::vector<Team*>::iterator it;
+    for(it=_teams.begin(); it!=_teams.end(); it++,c++) {
+        Team *team = *it;
+        team->startBattle();
+        std::cout << "Team " << team->getName() << " is on battle!\n";
     }
 }
 

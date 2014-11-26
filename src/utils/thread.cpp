@@ -27,7 +27,6 @@ void Thread::run() {
         if(_enabled)
             loop();
         msleep(20);
-        //msleep(1000);
     }
 }
 

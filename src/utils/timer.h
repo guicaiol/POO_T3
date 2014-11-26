@@ -14,6 +14,7 @@ class Timer {
 public:
     Timer();
 
+    void reset();
     void start();
     void mark();
     long timesec();

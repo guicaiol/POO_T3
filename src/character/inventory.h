@@ -35,6 +35,7 @@ public:
     void insertItem(Item *item, bool equip = false);
     void equipItem(std::string name);
     void unequipItem(std::string name);
+    const Item* getEquipedWeapon() const;
 	
 	Item* searchItem(std::string name) const;
 	Item* searchItem(unsigned index) const;

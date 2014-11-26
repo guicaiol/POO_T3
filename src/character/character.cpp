@@ -6,21 +6,26 @@
  **/
 
 #include "character.h"
+#include "src/team/team.h"
 
 Character::Character(std::string alias) {
     this->_alias = alias;
 	
 	// Initialization
-	this->XP = 1;
-	this->strenght = 1;
-	this->speed = 1;
-	this->dexterity = 1;
-	this->constitution = 1;
+    this->_XP = 1;
+    this->_strenght = 1;
+    this->_speed = 1;
+    this->_dexterity = 1;
+    this->_constitution = 1;
     this->_HP = 100;
     this->_MP = 100;
 
     // Default spaces = 5
     _myitems.setSpaces(5);
+
+    _myTeam = NULL;
+    _coolDownTimer.reset();
+    _speedTimer.reset();
 }
 
 Character::~Character() {
@@ -28,9 +33,71 @@ Character::~Character() {
 }
 
 void Character::loop() {
-    //std::cout << "Character '" << getName() << "' run!\n";
-    //if(this->getName()=="t2c1")
-//        this->addHP(-60);
+    //std::cout << "\n" << getName() << "::loop()";
+
+    // Attacking loop
+    Character *enemy = lookForEnemy();
+    if(enemy==NULL) { // no enemies to attack, just stop
+
+    } else {
+        // Get weapon
+        const Weapon *equipedWeapon = (const Weapon*)_myitems.getEquipedWeapon();
+        if(equipedWeapon==NULL) { // check if character has weapons
+
+        } else {
+
+            // Check range
+            const int range = equipedWeapon->getRange();
+            if(this->getPosition().distanceTo(enemy->getPosition())>range) {
+                // Move to enemy
+                this->moveTo(enemy->getPosition());
+            } else {
+                // Cool down
+                const int atkSpeed = equipedWeapon->getAtkSpeed(); // atkSpeed: atks per 5 seconds
+                const int atkTime = 5000/atkSpeed; // ms
+                _coolDownTimer.mark();
+                if(_coolDownTimer.timemsec()>=atkTime) {
+                    _coolDownTimer.start();
+
+                    // Attacks!
+                    this->attack(enemy);
+                }
+            }
+        }
+    }
+
+    // Life checking, self "disable" (thread disable)
+    if(isAlive()==false)
+        disable();
+}
+
+void Character::moveTo(const Position &pos) {
+    int moveTime = 1000/getRealSpeed();
+
+    // Timer speed
+    _speedTimer.mark();
+    if(_speedTimer.timemsec()<moveTime) {
+        return;
+    } else {
+        _speedTimer.start();
+
+        // Move
+        Position distance(pos.x()-this->getPosition().x(), pos.y()-this->getPosition().y());
+        int dirX = distance.x()==0? 0 : distance.x()/abs(distance.x());
+        int dirY = distance.y()==0? 0 : distance.y()/abs(distance.y());
+        Position direction(dirX, dirY);
+
+        Position newPosition(getPosition().x()+direction.x(), getPosition().y()+direction.y());
+        this->setPosition(newPosition);
+    }
+}
+
+void Character::setTeam(Team *team) {
+    _myTeam = team;
+}
+
+Character* Character::lookForEnemy() {
+    return _myTeam->getNearestEnemy(this);
 }
 
 void Character::useItem(std::string name) {
@@ -65,59 +132,59 @@ std::string Character::getName() const {
 
 int Character::getAttributesSum() const {
 	// Return sum of attributes
-	return strenght+speed+dexterity+constitution;
+    return _strenght+_speed+_dexterity+_constitution;
 }
 
 void Character::setStrenght(int value) {
 	// Check attributes maximum sum value
     int attrSum = this->getAttributesSum();
-    int free = Character::maxAttrSum - attrSum + this->strenght;
+    int free = Character::maxAttrSum - attrSum + this->_strenght;
 	if(value>free) {
         std::cout << ">> Character '" << this->_alias << "': setStrenght(" << value << ") exceeded maximum points available; strenght set to " << free << ".\n";
 		value = free;
 	}
 	
 	// Set strenght
-	this->strenght = value;
+    this->_strenght = value;
 }
 
 void Character::setSpeed(int value) {
 	// Check attributes maximum sum value
     int attrSum = this->getAttributesSum();
-    int free = Character::maxAttrSum - attrSum + this->speed;
+    int free = Character::maxAttrSum - attrSum + this->_speed;
 	if(value>free) {
         std::cout << ">> Character '" << this->_alias << "': setSpeed(" << value << ") exceeded maximum points available; speed set to " << free << ".\n";
 		value = free;
 	}
 	
 	// Set speed
-	this->speed = value;
+    this->_speed = value;
 }
 
 void Character::setDexterity(int value) {
 	// Check attributes maximum sum value
     int attrSum = this->getAttributesSum();
-    int free = Character::maxAttrSum - attrSum + this->dexterity;
+    int free = Character::maxAttrSum - attrSum + this->_dexterity;
 	if(value>free) {
         std::cout << ">> Character '" << this->_alias << "': setDexterity(" << value << ") exceeded maximum points available; dexterity set to " << free << ".\n";
 		value = free;
 	}
 	
 	// Set dexterity
-	this->dexterity = value;
+    this->_dexterity = value;
 }
 
 void Character::setConstitution(int value) {
 	// Check attributes maximum sum value
     int attrSum = this->getAttributesSum();
-    int free = Character::maxAttrSum - attrSum + this->constitution;
+    int free = Character::maxAttrSum - attrSum + this->_constitution;
 	if(value>free) {
         std::cout << ">> Character '" << this->_alias << "': setConstitution(" << value << ") exceeded maximum points available; constitution set to " << free << ".\n";
 		value = free;
 	}
 	
 	// Set constitution
-	this->constitution = value;
+    this->_constitution = value;
 }
 
 void Character::setStats(int strenght, int speed, int dexterity, int constitution) {
@@ -128,13 +195,13 @@ void Character::setStats(int strenght, int speed, int dexterity, int constitutio
 }
 
 void Character::addXP(int value) {
-	this->XP += value;
+    this->_XP += value;
 
 	// Check min and max
-	if(this->XP < 1)
-		this->XP = 1;	
-	if(this->XP > 100)
-		this->XP = 100;
+    if(this->_XP < 1)
+        this->_XP = 1;
+    if(this->_XP > 100)
+        this->_XP = 100;
 }
 
 void Character::addHP(int value) {
@@ -157,45 +224,47 @@ void Character::addMP(int value) {
         this->_MP = 100;
 }
 
-double Character::getRealSpeed() const {
+int Character::getRealSpeed() const {
     const double w = _myitems.getEquipedWeight();
-    return speed*exp(-pow(w/20, 2));
+    const int realSpeed = (int)(_speed*exp(-pow(w/20, 2)));
+    return realSpeed<1? 1 : realSpeed;
 }
 
 int Character::getDefensePts() const {
     int equiped_def_pts = _myitems.getEquipedDefensePts();
-	float constitution = 0.5*this->constitution;
-	float dexterity = 0.3*this->dexterity;
+    float constitution = 0.5*this->_constitution;
+    float dexterity = 0.3*this->_dexterity;
     float speed = 0.2*this->getRealSpeed();
-	return (constitution+dexterity+speed+equiped_def_pts)*((float)this->XP/2);
+    return (constitution+dexterity+speed+equiped_def_pts)*((float)this->_XP/2);
 }
 
 int Character::getAttackPts() const {
     int equiped_atk_pts = _myitems.getEquipedAttackPts();
-	float strenght = 0.5*this->strenght;
-	float dexterity = 0.3*this->dexterity;
+    float strenght = 0.5*this->_strenght;
+    float dexterity = 0.3*this->_dexterity;
     float speed = 0.2*this->getRealSpeed();
-	return (strenght+dexterity+speed+equiped_atk_pts)*((float)this->XP/3);
+    return (strenght+dexterity+speed+equiped_atk_pts)*((float)this->_XP/3);
 }
 
 void Character::attack(Character *defender) {
 	int r=0;
+    std::stringstream ss;
 	
 	// Output
-    std::cout << this->_alias << " attacks " << defender->getName() << ": ";
+    ss << this->_alias << " (team " << _myTeam->getName() << ") attacks " << defender->getName() << " (team " << defender->getTeam()->getName() << "): ";
 	
 	// Miss chance
-	const float miss = (0.1/this->XP)*100;
+    const float miss = (0.1/this->_XP)*100;
 	srand(clock());
 	r = rand()%100;
 	if(r<miss) {
-		std::cout << "MISSED!\n";
+        ss << "MISSED!\n";
 		// No damage
 		return;
 	}
 	
 	// Critical chance
-	const float critical = (0.02*(this->XP/2))*100;
+    const float critical = (0.02*(this->_XP/2))*100;
 	bool criticalHit = false;
 	srand(r);
 	r = rand()%100;
@@ -217,10 +286,17 @@ void Character::attack(Character *defender) {
 	
 	// Apply damage
     defender->addHP(-damage);
+
 	if(criticalHit)
-		std::cout << "CRITICAL HIT (" << damage << ")!\n";
+        ss << "CRITICAL HIT (" << damage << ")!\n";
 	else
-		std::cout << "HIT (" << damage << ")!\n";
+        ss << "HIT (" << damage << ")!\n";
+    if(defender->isAlive()==false)
+        ss << defender->getName() << " is dead!\n";
+
+    OutputHandler::lock();
+    std::cout << ss.str();
+    OutputHandler::unlock();
 }
 
 
@@ -241,12 +317,12 @@ std::string Character::getInfo() {
     ss << "Character alias: " << this->_alias << std::endl;
     ss << "Attack points: " << this->getAttackPts() << std::endl;
     ss << "Defense points: " << this->getDefensePts() << std::endl;
-    ss << "XP: " << this->XP << std::endl;
-    ss << "Strenght: " << this->strenght << std::endl;
-    ss << "Speed: " << this->speed << std::endl;
+    ss << "XP: " << this->_XP << std::endl;
+    ss << "Strenght: " << this->_strenght << std::endl;
+    ss << "Speed: " << this->_speed << std::endl;
     ss << "Real speed: " << this->getRealSpeed() << std::endl;
-    ss << "Dexterity: " << this->dexterity << std::endl;
-    ss << "Constitution: " << this->constitution << std::endl;
+    ss << "Dexterity: " << this->_dexterity << std::endl;
+    ss << "Constitution: " << this->_constitution << std::endl;
     ss << "Items in inventory:";
     for(int i=0; i<_myitems.size(); i++) {
         Item *item = _myitems.searchItem(i);

@@ -62,7 +62,8 @@ SOURCES       = src/character/characters/knight.cpp \
 		src/main.cpp \
 		src/utils/position.cpp \
 		src/game/field.cpp \
-		src/utils/timer.cpp 
+		src/utils/timer.cpp \
+		src/utils/outputhandler.cpp 
 OBJECTS       = obj/knight.o \
 		obj/thief.o \
 		obj/wizard.o \
@@ -80,7 +81,8 @@ OBJECTS       = obj/knight.o \
 		obj/main.o \
 		obj/position.o \
 		obj/field.o \
-		obj/timer.o
+		obj/timer.o \
+		obj/outputhandler.o
 DIST          = /usr/lib64/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib64/qt5/mkspecs/common/shell-unix.conf \
 		/usr/lib64/qt5/mkspecs/common/unix.conf \
@@ -200,7 +202,8 @@ DIST          = /usr/lib64/qt5/mkspecs/features/spec_pre.prf \
 		src/main.cpp \
 		src/utils/position.cpp \
 		src/game/field.cpp \
-		src/utils/timer.cpp
+		src/utils/timer.cpp \
+		src/utils/outputhandler.cpp
 QMAKE_TARGET  = trab3
 DESTDIR       = bin/#avoid trailing-slash linebreak
 TARGET        = bin/trab3
@@ -480,7 +483,14 @@ obj/knight.o: src/character/characters/knight.cpp src/character/characters/knigh
 		src/character/inventory.h \
 		src/item/item.h \
 		src/utils/thread.h \
-		src/utils/position.h
+		src/utils/position.h \
+		src/utils/timer.h \
+		src/item/items.h \
+		src/item/armor/armor.h \
+		src/item/weapon/weapon.h \
+		src/item/potion/potions/healthpotion.h \
+		src/item/potion/potion.h \
+		src/item/potion/potions/manapotion.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o obj/knight.o src/character/characters/knight.cpp
 
 obj/thief.o: src/character/characters/thief.cpp src/character/characters/thief.h \
@@ -488,7 +498,14 @@ obj/thief.o: src/character/characters/thief.cpp src/character/characters/thief.h
 		src/character/inventory.h \
 		src/item/item.h \
 		src/utils/thread.h \
-		src/utils/position.h
+		src/utils/position.h \
+		src/utils/timer.h \
+		src/item/items.h \
+		src/item/armor/armor.h \
+		src/item/weapon/weapon.h \
+		src/item/potion/potions/healthpotion.h \
+		src/item/potion/potion.h \
+		src/item/potion/potions/manapotion.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o obj/thief.o src/character/characters/thief.cpp
 
 obj/wizard.o: src/character/characters/wizard.cpp src/character/characters/wizard.h \
@@ -496,14 +513,31 @@ obj/wizard.o: src/character/characters/wizard.cpp src/character/characters/wizar
 		src/character/inventory.h \
 		src/item/item.h \
 		src/utils/thread.h \
-		src/utils/position.h
+		src/utils/position.h \
+		src/utils/timer.h \
+		src/item/items.h \
+		src/item/armor/armor.h \
+		src/item/weapon/weapon.h \
+		src/item/potion/potions/healthpotion.h \
+		src/item/potion/potion.h \
+		src/item/potion/potions/manapotion.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o obj/wizard.o src/character/characters/wizard.cpp
 
 obj/character.o: src/character/character.cpp src/character/character.h \
 		src/character/inventory.h \
 		src/item/item.h \
 		src/utils/thread.h \
-		src/utils/position.h
+		src/utils/position.h \
+		src/utils/timer.h \
+		src/item/items.h \
+		src/item/armor/armor.h \
+		src/item/weapon/weapon.h \
+		src/item/potion/potions/healthpotion.h \
+		src/item/potion/potion.h \
+		src/item/potion/potions/manapotion.h \
+		src/team/team.h \
+		src/utils/myvector.h \
+		src/team/color.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o obj/character.o src/character/character.cpp
 
 obj/inventory.o: src/character/inventory.cpp src/character/inventory.h \
@@ -513,11 +547,18 @@ obj/inventory.o: src/character/inventory.cpp src/character/inventory.h \
 obj/game.o: src/game/game.cpp src/game/game.h \
 		src/utils/thread.h \
 		src/utils/myvector.h \
+		src/utils/timer.h \
 		src/team/team.h \
 		src/character/character.h \
 		src/character/inventory.h \
 		src/item/item.h \
 		src/utils/position.h \
+		src/item/items.h \
+		src/item/armor/armor.h \
+		src/item/weapon/weapon.h \
+		src/item/potion/potions/healthpotion.h \
+		src/item/potion/potion.h \
+		src/item/potion/potions/manapotion.h \
 		src/team/color.h \
 		src/game/field.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o obj/game.o src/game/game.cpp
@@ -527,7 +568,13 @@ obj/armor.o: src/item/armor/armor.cpp src/item/armor/armor.h \
 		src/character/character.h \
 		src/character/inventory.h \
 		src/utils/thread.h \
-		src/utils/position.h
+		src/utils/position.h \
+		src/utils/timer.h \
+		src/item/items.h \
+		src/item/weapon/weapon.h \
+		src/item/potion/potions/healthpotion.h \
+		src/item/potion/potion.h \
+		src/item/potion/potions/manapotion.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o obj/armor.o src/item/armor/armor.cpp
 
 obj/healthpotion.o: src/item/potion/potions/healthpotion.cpp src/item/potion/potions/healthpotion.h \
@@ -536,7 +583,12 @@ obj/healthpotion.o: src/item/potion/potions/healthpotion.cpp src/item/potion/pot
 		src/character/character.h \
 		src/character/inventory.h \
 		src/utils/thread.h \
-		src/utils/position.h
+		src/utils/position.h \
+		src/utils/timer.h \
+		src/item/items.h \
+		src/item/armor/armor.h \
+		src/item/weapon/weapon.h \
+		src/item/potion/potions/manapotion.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o obj/healthpotion.o src/item/potion/potions/healthpotion.cpp
 
 obj/manapotion.o: src/item/potion/potions/manapotion.cpp src/item/potion/potions/manapotion.h \
@@ -545,7 +597,12 @@ obj/manapotion.o: src/item/potion/potions/manapotion.cpp src/item/potion/potions
 		src/character/character.h \
 		src/character/inventory.h \
 		src/utils/thread.h \
-		src/utils/position.h
+		src/utils/position.h \
+		src/utils/timer.h \
+		src/item/items.h \
+		src/item/armor/armor.h \
+		src/item/weapon/weapon.h \
+		src/item/potion/potions/healthpotion.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o obj/manapotion.o src/item/potion/potions/manapotion.cpp
 
 obj/potion.o: src/item/potion/potion.cpp src/item/potion/potion.h \
@@ -557,7 +614,13 @@ obj/weapon.o: src/item/weapon/weapon.cpp src/item/weapon/weapon.h \
 		src/character/character.h \
 		src/character/inventory.h \
 		src/utils/thread.h \
-		src/utils/position.h
+		src/utils/position.h \
+		src/utils/timer.h \
+		src/item/items.h \
+		src/item/armor/armor.h \
+		src/item/potion/potions/healthpotion.h \
+		src/item/potion/potion.h \
+		src/item/potion/potions/manapotion.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o obj/weapon.o src/item/weapon/weapon.cpp
 
 obj/item.o: src/item/item.cpp src/item/item.h
@@ -569,7 +632,16 @@ obj/team.o: src/team/team.cpp src/team/team.h \
 		src/item/item.h \
 		src/utils/thread.h \
 		src/utils/position.h \
-		src/team/color.h
+		src/utils/timer.h \
+		src/item/items.h \
+		src/item/armor/armor.h \
+		src/item/weapon/weapon.h \
+		src/item/potion/potions/healthpotion.h \
+		src/item/potion/potion.h \
+		src/item/potion/potions/manapotion.h \
+		src/utils/myvector.h \
+		src/team/color.h \
+		src/game/field.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o obj/team.o src/team/team.cpp
 
 obj/thread.o: src/utils/thread.cpp src/utils/thread.h
@@ -578,11 +650,18 @@ obj/thread.o: src/utils/thread.cpp src/utils/thread.h
 obj/main.o: src/main.cpp src/game/game.h \
 		src/utils/thread.h \
 		src/utils/myvector.h \
+		src/utils/timer.h \
 		src/team/team.h \
 		src/character/character.h \
 		src/character/inventory.h \
 		src/item/item.h \
 		src/utils/position.h \
+		src/item/items.h \
+		src/item/armor/armor.h \
+		src/item/weapon/weapon.h \
+		src/item/potion/potions/healthpotion.h \
+		src/item/potion/potion.h \
+		src/item/potion/potions/manapotion.h \
 		src/team/color.h \
 		src/game/field.h \
 		src/character/characters.h \
@@ -595,11 +674,28 @@ obj/position.o: src/utils/position.cpp src/utils/position.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o obj/position.o src/utils/position.cpp
 
 obj/field.o: src/game/field.cpp src/game/field.h \
-		src/utils/position.h
+		src/team/team.h \
+		src/character/character.h \
+		src/character/inventory.h \
+		src/item/item.h \
+		src/utils/thread.h \
+		src/utils/position.h \
+		src/utils/timer.h \
+		src/item/items.h \
+		src/item/armor/armor.h \
+		src/item/weapon/weapon.h \
+		src/item/potion/potions/healthpotion.h \
+		src/item/potion/potion.h \
+		src/item/potion/potions/manapotion.h \
+		src/utils/myvector.h \
+		src/team/color.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o obj/field.o src/game/field.cpp
 
 obj/timer.o: src/utils/timer.cpp src/utils/timer.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o obj/timer.o src/utils/timer.cpp
+
+obj/outputhandler.o: src/utils/outputhandler.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o obj/outputhandler.o src/utils/outputhandler.cpp
 
 ####### Install
 
