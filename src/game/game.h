@@ -9,11 +9,11 @@
 #define GAME_H
 
 #include <exception>
-#include "src/utils/thread.h"
-#include "src/utils/myvector.h"
-#include "src/utils/timer.h"
-#include "src/utils/outputhandler.h"
-#include "src/team/team.h"
+#include "../utils/thread.h"
+#include "../utils/myvector.h"
+#include "../utils/timer.h"
+#include "../utils/outputhandler.h"
+#include "../team/team.h"
 #include "field.h"
 
 class Game : public Thread {

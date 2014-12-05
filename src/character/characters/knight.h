@@ -8,7 +8,7 @@
 #ifndef KNIGHT_H
 #define KNIGHT_H
 
-#include "src/character/character.h"
+#include "../character.h"
 
 class Knight : public Character {
 protected:

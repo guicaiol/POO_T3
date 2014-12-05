@@ -9,7 +9,7 @@
 #define INVENTORY_H
 
 #include <vector>
-#include "src/item/item.h"
+#include "../item/item.h"
 
 class Inventory {
 private:

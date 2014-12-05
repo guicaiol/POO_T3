@@ -7,9 +7,9 @@
 
 #include <iostream>
 #include <ctime>
-#include "src/game/game.h"
-#include "src/character/characters.h"
-#include "src/item/items.h"
+#include "game/game.h"
+#include "character/characters.h"
+#include "item/items.h"
 
 std::string generateRandomAlias() {
     const int size = 16;

@@ -8,7 +8,7 @@
 #ifndef WIZARD_H
 #define WIZARD_H
 
-#include "src/character/character.h"
+#include "../character.h"
 
 class Wizard : public Character {
 protected:

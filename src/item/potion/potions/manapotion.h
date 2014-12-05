@@ -8,8 +8,8 @@
 #ifndef MANAPOTION_H
 #define MANAPOTION_H
 
-#include "src/item/potion/potion.h"
-#include "src/character/character.h"
+#include "../potion.h"
+#include "../../../character/character.h"
 
 class ManaPotion : public Potion {
 public:

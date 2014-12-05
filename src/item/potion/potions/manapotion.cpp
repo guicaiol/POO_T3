@@ -6,7 +6,7 @@
  **/
 
 #include "manapotion.h"
-#include "src/team/team.h"
+#include "../../../team/team.h"
 
 ManaPotion::ManaPotion(double price, unsigned restorepts) : Potion("Mana Potion", price, restorepts) {
 

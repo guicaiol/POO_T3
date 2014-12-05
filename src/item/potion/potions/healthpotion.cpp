@@ -6,7 +6,7 @@
  **/
 
 #include "healthpotion.h"
-#include "src/team/team.h"
+#include "../../../team/team.h"
 
 HealthPotion::HealthPotion(double price, unsigned restorepts) : Potion("Health Potion", price, restorepts) {
 

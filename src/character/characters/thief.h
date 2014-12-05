@@ -8,7 +8,7 @@
 #ifndef THIEF_H
 #define THIEF_H
 
-#include "src/character/character.h"
+#include "../character.h"
 
 class Thief : public Character {
 protected:

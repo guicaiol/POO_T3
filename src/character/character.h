@@ -13,11 +13,11 @@
 #include <sstream>
 #include <math.h>
 #include "inventory.h"
-#include "src/utils/thread.h"
-#include "src/utils/position.h"
-#include "src/utils/timer.h"
-#include "src/utils/outputhandler.h"
-#include "src/item/items.h"
+#include "../utils/thread.h"
+#include "../utils/position.h"
+#include "../utils/timer.h"
+#include "../utils/outputhandler.h"
+#include "../item/items.h"
 
 class Team; // forward-declaration
 

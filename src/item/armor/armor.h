@@ -8,8 +8,8 @@
 #ifndef ARMOR_H
 #define ARMOR_H
 
-#include "src/item/item.h"
-#include "src/character/character.h"
+#include "../item.h"
+#include "../../character/character.h"
 
 class Armor : public Item {
 protected:

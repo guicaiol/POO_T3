@@ -8,8 +8,8 @@
 #ifndef WEAPON_H
 #define WEAPON_H
 
-#include "src/item/item.h"
-#include "src/character/character.h"
+#include "../item.h"
+#include "../../character/character.h"
 
 class Weapon : public Item {
 protected:

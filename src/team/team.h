@@ -12,9 +12,9 @@
 #include <iostream>
 #include <vector>
 
-#include "src/character/character.h"
-#include "src/utils/position.h"
-#include "src/utils/myvector.h"
+#include "../character/character.h"
+#include "../utils/position.h"
+#include "../utils/myvector.h"
 #include "color.h"
 
 class Field; // foward-declaration

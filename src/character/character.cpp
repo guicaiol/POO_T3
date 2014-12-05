@@ -6,7 +6,7 @@
  **/
 
 #include "character.h"
-#include "src/team/team.h"
+#include "../team/team.h"
 
 Character::Character(std::string alias) {
     this->_alias = alias;

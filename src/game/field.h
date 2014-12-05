@@ -6,9 +6,9 @@
  **/
 
 #include <assert.h>
-#include "src/team/team.h"
-#include "src/utils/myvector.h"
-#include "src/utils/position.h"
+#include "../team/team.h"
+#include "../utils/myvector.h"
+#include "../utils/position.h"
 
 class Field  {
 public:

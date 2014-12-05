@@ -6,7 +6,7 @@
  **/
 
 #include "team.h"
-#include "src/game/field.h"
+#include "../game/field.h"
 
 Team::Team(std::string name, Color color) {
     this->_name = name;

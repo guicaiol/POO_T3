@@ -8,8 +8,8 @@
 #ifndef HEALTHPOTION_H
 #define HEALTHPOTION_H
 
-#include "src/item/potion/potion.h"
-#include "src/character/character.h"
+#include "../potion.h"
+#include "../../../character/character.h"
 
 class HealthPotion : public Potion {
 public:
