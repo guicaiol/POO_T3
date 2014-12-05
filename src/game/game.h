@@ -19,6 +19,7 @@
 class Game : public Thread {
 public:
     Game(int rounds = 3, int roundTime = 120);
+    virtual ~Game();
 
     // Adds a team to the game
     void addTeam(Team *team);
@@ -45,8 +46,10 @@ private:
     void stopBattle();
     void startBattle();
 
-    // Resolve battle, adding win/lose/draw to teams and returning winner
+    // Resolve round/battle and return winner
+    Team* resolveRound();
     Team* resolveBattle();
+
 };
 
 #endif // GAME_H

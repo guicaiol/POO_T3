@@ -18,9 +18,9 @@ protected:
     int getDefensePts();
 public:
     Wizard(std::string _alias, int wisdom);
+    std::string getCharacterClass() const { return "Wizard"; }
 
     void addWisdom(int value);
-    //void attack(Character &defender); // unused, for now, attack() still the same as Character::attack()
 };
 
 #endif // WIZARD_H

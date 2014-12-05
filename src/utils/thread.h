@@ -15,6 +15,7 @@
 class Thread {
 public:
     Thread();
+    virtual ~Thread();
 
     // Get thread state
     bool isRunning() const { return _running; }

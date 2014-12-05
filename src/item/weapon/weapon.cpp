@@ -40,5 +40,5 @@ int Weapon::getAtkSpeed() const {
 }
 
 void Weapon::use(Character *c) {
-    std::cout << "Doesn't known how to use this weapon (" << this->getName() << ")...\n";
+    c->equipItem(this->getName());
 }

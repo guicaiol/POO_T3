@@ -35,15 +35,14 @@ public:
     // Team info
     std::string getName() const;
     std::string getResults() const;
-    std::string toString() const;
     double getPoints() const;
+    int getWin() const { return _win; }
+    int getLose() const { return _lose; }
+    int getDraw() const { return _draw; }
 
     // Characters info
-    std::string getCharsInfo() const;
     MyVector<Character*>* chars();
-    Character* searchChar(std::string _name) const;
     void addChar(Character *c);
-    void removeChar(int index);
     void removeChar(Character *c);
     void removeChar(std::string _name);
     int size() const { return _characters.size(); }

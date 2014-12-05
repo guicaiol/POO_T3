@@ -13,40 +13,35 @@
 
 class Inventory {
 private:
-	int spaces;
-	double gold;
-	std::vector< std::pair<Item*, bool> > items;
+    int _spaces;
+    double _gold;
+    std::vector< std::pair<Item*, bool> > _items;
 
-    unsigned armorsEquiped;
-    unsigned weaponsEquiped;
+    unsigned _armorsEquiped;
+    unsigned _weaponsEquiped;
 public:
 	Inventory();
 	~Inventory();
-	
-	double getTotalGold() const;
-	int getAvailableSpace() const;
+
+    int size() const { return _items.size(); }
+
     double getEquipedWeight() const;
+
+    void setSpaces(int number);
+    int getAvailableSpace() const { return _spaces - _items.size(); }
 	
+    double getTotalGold() const { return _gold; }
 	void spendGold(double value);
 	void earnGold(double value);
-	
-    void setSpaces(int number);
-	
+		
     void insertItem(Item *item, bool equip = false);
     void equipItem(std::string name);
     void unequipItem(std::string name);
     const Item* getEquipedWeapon() const;
 	
 	Item* searchItem(std::string name) const;
-	Item* searchItem(unsigned index) const;
-	
 	void removeItem(std::string name);
-    void removeItem(unsigned index);
-
-    int size() const { return items.size(); }
 	
-	
-//	double getGold();
     int getEquipedDefensePts() const;
     int getEquipedAttackPts() const;
 };

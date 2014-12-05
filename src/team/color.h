@@ -11,12 +11,10 @@
 #include <iostream>
 
 enum Color {
-	blue,
-	red,
-	green,
-	yellow,
-	white,
-	black
+    blue=1,
+    red,
+    green,
+    yellow
 };
 
 class HColor {
@@ -24,17 +22,13 @@ public:
     static std::string colorToString(Color color) {
         switch(color) {
             case blue:
-                return "blue";
+                return "azul";
             case red:
-                return "red";
+                return "vermelho";
             case green:
-                return "green";
+                return "verde";
             case yellow:
-                return "yellow";
-            case white:
-                return "white";
-            case black:
-                return "black";
+                return "amarelo";
             default:
                 return "undefined";
         }

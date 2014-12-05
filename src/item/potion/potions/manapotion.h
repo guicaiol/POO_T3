@@ -13,7 +13,7 @@
 
 class ManaPotion : public Potion {
 public:
-	ManaPotion(std::string name, double price, unsigned restorepts);
+    ManaPotion(double price, unsigned restorepts);
 	ManaPotion(ManaPotion &manapotion);
 	~ManaPotion();
 

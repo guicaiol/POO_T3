@@ -18,9 +18,9 @@ protected:
     //int getDefensePts(); // not necessary, will automatically call Character::getDefensePts()
 public:
     Thief(std::string _alias, int stealth);
+    std::string getCharacterClass() const { return "Thief"; }
 
     void addStealth(int value);
-    //void attack(Character &defender); // unused, for now, attack() still the same as Character::attack()
 };
 
 #endif // THIEF_H

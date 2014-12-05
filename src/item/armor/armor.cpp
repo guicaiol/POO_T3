@@ -44,5 +44,5 @@ double Armor::getWeight() const {
 }
 
 void Armor::use(Character *c) {
-    std::cout << "Doesn't known how to use this armor (" << this->getName() << ")...\n";
+    c->equipItem(this->getName());
 }

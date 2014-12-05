@@ -6,8 +6,9 @@
  **/
 
 #include "manapotion.h"
+#include "src/team/team.h"
 
-ManaPotion::ManaPotion(std::string name, double price, unsigned restorepts) : Potion(name, price, restorepts) {
+ManaPotion::ManaPotion(double price, unsigned restorepts) : Potion("Mana Potion", price, restorepts) {
 
 }
 
@@ -20,7 +21,7 @@ ManaPotion::~ManaPotion() {
 }
 
 void ManaPotion::use(Character *c) {
-	std::cout << c->getName() << " used ManaPotion (+" << this->getRestorePts() <<" MP)!" << "\n";
+    std::cout << c->getName() << " (" << c->getTeam()->getName() << ") usou poção de MP (+" << this->getRestorePts() <<" MP)!" << "\n";
 
     c->addMP(this->getRestorePts());
     c->dropItem(this->getName()); // should be the last call; after this object will no longer exists

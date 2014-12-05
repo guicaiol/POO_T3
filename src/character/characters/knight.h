@@ -18,9 +18,10 @@ protected:
     int getDefensePts();
 public:
     Knight(std::string _alias, int power);
+    std::string getCharacterClass() const { return "Knight"; }
 
     void addPower(int value);
-    //void attack(Character &defender); // unused, for now, attack() still the same as Character::attack()
+
 };
 
 #endif // KNIGHT_H

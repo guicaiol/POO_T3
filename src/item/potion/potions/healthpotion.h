@@ -13,7 +13,7 @@
 
 class HealthPotion : public Potion {
 public:
-    HealthPotion(std::string name, double price, unsigned restorepts);
+    HealthPotion(double price, unsigned restorepts);
 	HealthPotion(HealthPotion &healthpotion);
 	~HealthPotion();
 

@@ -44,34 +44,11 @@ std::string Team::getResults() const {
     return ss.str();
 }
 
-std::string Team::toString() const {
-    std::stringstream ss;
-    ss << this->_name << " (" << HColor::colorToString(this->_color) << ")";
-    return ss.str();
-}
-
-std::string Team::getCharsInfo() const {
-    std::stringstream ss;
-    for(unsigned i=0; i<_characters.size(); i++) {
-        Character *tmp = _characters.at(i);
-        ss << "--------- Char \"" << tmp->getName()  << "\" ---------\n";
-        ss << tmp->getInfo() << "\n\n";
-    }
-    return ss.str();
-}
-
 double Team::getPoints() const {
     double sum=0.0;
     for(std::vector<Character*>::const_iterator it = _characters.begin(); it!=_characters.end(); it++)
         sum += (*it)->getHP();
     return (double)sum/_characters.size();
-}
-
-Character* Team::searchChar(std::string name) const {
-    for(std::vector<Character*>::const_iterator it = _characters.begin(); it!=_characters.end(); it++)
-        if((*it)->getName()==name)
-            return (*it);
-    return NULL;
 }
 
 void Team::addChar(Character *c) {
@@ -92,10 +69,6 @@ void Team::removeChar(std::string name) {
 
 void Team::removeChar(Character *c) {
     removeChar(c->getName());
-}
-
-void Team::removeChar(int index) {
-    removeChar(*(_characters.begin() + index));
 }
 
 void Team::setInitialPosition(const Position &center) {

@@ -6,8 +6,9 @@
  **/
 
 #include "healthpotion.h"
+#include "src/team/team.h"
 
-HealthPotion::HealthPotion(std::string name, double price, unsigned restorepts) : Potion(name, price, restorepts) {
+HealthPotion::HealthPotion(double price, unsigned restorepts) : Potion("Health Potion", price, restorepts) {
 
 }
 
@@ -20,7 +21,7 @@ HealthPotion::~HealthPotion() {
 }
 
 void HealthPotion::use(Character *c) {
-    std::cout << c->getName() << " used HealthPotion (+" << this->getRestorePts() <<" HP)!" << "\n";
+    std::cout << c->getName() << " (" << c->getTeam()->getName() << ") usou poção de HP (+" << this->getRestorePts() <<" HP)!\n";
 
     c->addHP(this->getRestorePts());
     c->dropItem(this->getName()); // should be the last call; after this object will no longer exists

@@ -12,6 +12,10 @@ Thread::Thread() {
     _enabled = true;
 }
 
+Thread::~Thread() {
+
+}
+
 void Thread::start() {
     if(_running)
         return;

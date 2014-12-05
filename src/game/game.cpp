@@ -13,6 +13,15 @@ Game::Game(int rounds, int roundTime) {
     _marker = -1;
 }
 
+Game::~Game() {
+    std::vector<Team*>::iterator it;
+    for(it=_teams.begin(); it!=_teams.end(); it++) {
+        Team *team = *it;
+        delete team;
+    }
+    _teams.clear();
+}
+
 void Game::addTeam(Team *team) {
     // Check pointer
     if(team==NULL)
@@ -30,7 +39,15 @@ void Game::addTeam(Team *team) {
     _teams.push_back(team);
 }
 
+void flushstdin() {
+    int c;
+    do {
+        c = getchar();
+    } while (c!='\n' && c!=EOF);
+}
+
 void Game::loop() {
+    flushstdin();
 
     // Check number of teams, has to be at least 2
     if(_teams.size()<2)
@@ -39,16 +56,24 @@ void Game::loop() {
     // Initialize teams with field information
     generateField();
 
+    std::cout << "\n---- Preparar para a batalha ----\n";
+
     // Run rounds
     for(int round=1; round<=_rounds; round++) {
         std::vector<Team*>::iterator it;
-        std::cout << "Starting round #" << round << "...\n";
+
+        std::cout << "-- Round #" << round << " --\n";
+        std::cout << "Pressione qualquer tecla para iniciar!";
+        getchar();
+        std::cout << "\n";
 
         // Reset battle
         resetBattle();
 
         // Start battle
         startBattle();
+
+        std::cout << "\n";
 
         // Wait until only one team is alive, or time out
         Timer timer;
@@ -73,7 +98,7 @@ void Game::loop() {
             int time = _roundTime-timer.timesec();
             if(time!=_marker) {
                 OutputHandler::lock();
-                std::cout << "Time remaining: [" << time << " seconds]\n";
+                std::cout << "Tempo restante: [" << time << " segundos]\n";
                 OutputHandler::unlock();
                 _marker = time;
             }
@@ -81,7 +106,7 @@ void Game::loop() {
             // Time out checking
             if(timer.timesec()>=_roundTime) { // time out!
                 OutputHandler::lock();
-                std::cout << "TIME OUT!\n";
+                std::cout << "TEMPO ESGOTADO!\n";
                 OutputHandler::unlock();
                 stopBattle();
                 break;
@@ -89,12 +114,12 @@ void Game::loop() {
         }
 
         // Announce round winner
-        std::cout << "End of round #" << round << ", result: ";
-        Team* winner = resolveBattle();
+        std::cout << "Fim do round #" << round << ", resultado: ";
+        Team* winner = resolveRound();
         if(winner==NULL)
-            std::cout << "DRAW!";
+            std::cout << "EMPATE!";
         else
-            std::cout << winner->getName() << " wins!";
+            std::cout << winner->getName() << " ganhou (" << (int)winner->getPoints() << " pontos)!";
         std::cout << "\n\n";
 
         // Compute win/lose/draw
@@ -119,6 +144,17 @@ void Game::loop() {
 
     // For each team, do final reset operations
     resetBattle();
+
+    // Announce game winner
+    std::cout << "---- Resultado da batalha ----\n";
+    Team *winner = resolveBattle();
+    if(winner==NULL)
+        std::cout << ">> EMPATE!";
+    else
+        std::cout << ">> " << winner->getName() << " é o vencedor!\n";
+    std::cout << "\nPressione qualquer tecla para sair.";
+    getchar();
+    std::cout << "\n";
 
     stop();
 }
@@ -169,11 +205,11 @@ void Game::startBattle() {
     for(it=_teams.begin(); it!=_teams.end(); it++,c++) {
         Team *team = *it;
         team->startBattle();
-        std::cout << "Team " << team->getName() << " is on battle!\n";
+        std::cout << "Time " << team->getName() << " está na batalha!\n";
     }
 }
 
-Team* Game::resolveBattle() {
+Team* Game::resolveRound() {
     double max = -1;
     Team *win=NULL;
 
@@ -189,4 +225,22 @@ Team* Game::resolveBattle() {
             win = NULL; // draw
     }
     return win;
+}
+
+Team* Game::resolveBattle() {
+    double max = -1;
+    Team *winner=NULL;
+
+    // Get team with max wins; if two teams with same result, its a draw!
+    std::vector<Team*>::iterator it;
+    for(it=_teams.begin(); it!=_teams.end(); it++) {
+        Team *team = *it;
+        int win = team->getWin();
+        if(win>max) { // winner
+            winner = team;
+            max = win;
+        } else if(win==max)
+            winner = NULL; // draw
+    }
+    return winner;
 }

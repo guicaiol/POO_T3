@@ -32,7 +32,7 @@ protected:
     virtual int getDefensePts() const;
     virtual int getAttackPts() const;
 private:
-	static const unsigned maxAttrSum = 100;
+    static const unsigned _maxAttrSum = 100;
 
     Position _position;
     std::string _alias;
@@ -54,9 +54,12 @@ private:
 public:
     Character(std::string _alias);
     virtual ~Character();
+
+    virtual std::string getCharacterClass() const = 0;
 	
     const Team* getTeam() const { return _myTeam; }
     bool isAlive() const { return (_HP>0); }
+    int getXP() const { return _XP; }
     int getHP() const;
     int getMP() const;
 
@@ -66,7 +69,7 @@ public:
     void setSpeed(int value);
     void setDexterity(int value);
     void setConstitution(int value);
-    void setStats(int _strenght, int _speed, int _dexterity, int _constitution);
+    void setStats(int strenght, int speed, int dexterity, int constitution);
 	void addXP(int value);
 	void addHP(int value);
 	void addMP(int value);
@@ -76,7 +79,6 @@ public:
     void storeItem(Item *item, bool equip = false);
     void equipItem(std::string name);
     void dropItem(std::string name);
-    std::string getInfo();
 	
     virtual void attack(Character *defender);
 
