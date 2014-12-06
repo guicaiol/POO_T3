@@ -2,7 +2,7 @@ SRC		= src
 OBJ		= obj
 BIN		= bin
 CC		= g++
-FLAGS	= -std=c++11 -Wall -lm
+FLAGS	= -std=c++11 -Wall -lm -pthread
 TARGET	= $(BIN)/trab3
 
 OBJECTS = \
