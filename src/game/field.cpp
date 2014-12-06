@@ -51,8 +51,8 @@ Character* Field::getNearestEnemy(Team *team, Character *ch) {
             continue;
 
         // For each player
-        const MyVector<Character*> *characters = t->chars();
-        MyVector<Character*>::const_iterator it2;
+        const std::vector<Character*> *characters = t->chars();
+        std::vector<Character*>::const_iterator it2;
         for(it2=characters->cbegin(); it2!=characters->cend(); it2++) {
             Character *enemy = *it2;
 

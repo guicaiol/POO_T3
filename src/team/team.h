@@ -26,7 +26,7 @@ private:
     int _win;
     int _lose;
     int _draw;
-    MyVector<Character*> _characters;
+    std::vector<Character*> _characters;
     Field *_field;
 public:
     Team(std::string _name, Color _color);
@@ -41,7 +41,7 @@ public:
     int getDraw() const { return _draw; }
 
     // Characters info
-    MyVector<Character*>* chars();
+    std::vector<Character*>* chars();
     void addChar(Character *c);
     void removeChar(Character *c);
     void removeChar(std::string _name);

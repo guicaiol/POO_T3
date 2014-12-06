@@ -128,7 +128,7 @@ int Team::playersAlive() const {
     return alive;
 }
 
-MyVector<Character*>* Team::chars() {
+std::vector<Character*>* Team::chars() {
     return &_characters;
 }
 
